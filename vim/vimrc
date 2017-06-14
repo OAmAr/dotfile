@@ -1,0 +1,12 @@
+set number
+set autoindent
+set shiftwidth=4
+set tabstop=4
+"Macros
+"m places single quotes around word
+let @m="ciw\'\"\'"
+"c comments, u uncomments (python only)
+let @c="^I#"
+let @z="^I[3~"
+
+
