@@ -155,12 +155,16 @@ bindsym $mod+r mode "resize"
 #Make it so you can logout using keyboard
 #bindsym $mod+Shift+e exec sh -c [$(echo "NO\nYES" | dmenu -sb "#ff6600" -i -p "Really exit i3 X session?") = "YES" && i3-msg exit]
 
+#Gaps baby
+gaps inner 10
+gaps outer 15
+smart_gaps on
 #just exit damnit
 bindsym $mod+Shift+e exec i3-msg exit
 
 #disable titlebars on all windows
 for_window [class="^.*"] border pixel 0
-
+exec --no-startup-id xsetroot -solid black
 #exec --no-startup-id xsetroot -solid "#666333"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)

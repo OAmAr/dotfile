@@ -6,7 +6,7 @@ set tabstop=4
 "m places single quotes around word
 let @m="ciw\'\"\'"
 "c comments, u uncomments (python only)
-let @c="^I#"
-let @z="^I[3~"
+let @c="^I#OB"
+let @z="^I[3~OB"
 
 
