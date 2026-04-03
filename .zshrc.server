@@ -1,0 +1,41 @@
+# ~/.zshrc.server — macOS server-specific config
+# Loaded via ~/.zshrc.local -> ~/.zshrc.server
+# Base ~/.zshrc is already sourced before this file.
+
+# ── Homebrew (Intel macOS) ────────────────────────────────────────────────────
+eval "$(/usr/local/bin/brew shellenv)" 2>/dev/null
+
+# ── pyenv ─────────────────────────────────────────────────────────────────────
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)" 2>/dev/null
+
+# ── nvm ───────────────────────────────────────────────────────────────────────
+export NVM_DIR="$HOME/.nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
+
+# ── SSH agent ─────────────────────────────────────────────────────────────────
+if [[ -z "$SSH_AUTH_SOCK" ]]; then
+  eval "$(ssh-agent -s)" > /dev/null
+  ssh-add ~/.ssh/id_ed25519 2>/dev/null
+fi
+
+# ── tmux: auto-attach on SSH login ────────────────────────────────────────────
+if [[ -n "$SSH_CONNECTION" ]] && command -v tmux &>/dev/null && [[ -z "$TMUX" ]]; then
+  tmux attach-session -t main 2>/dev/null || tmux new-session -s main
+fi
+
+# ── Prompt ────────────────────────────────────────────────────────────────────
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats ' (%b)'
+setopt PROMPT_SUBST
+PROMPT='%F{cyan}%n@%m%f:%F{yellow}%~%f%F{green}${vcs_info_msg_0_}%f %# '
+
+# ── Server aliases ─────────────────────────────────────────────────────────────
+alias ports='lsof -i -P -n | grep LISTEN'
+alias myip='curl -s ifconfig.me'
+alias brewup='brew update && brew upgrade && brew cleanup'
+
+# ── Path dedup ────────────────────────────────────────────────────────────────
+typeset -U PATH
